@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout code
@@ -20,24 +20,10 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-
-      - name: Start services
-        run: docker compose up -d --build
-
-      - name: Wait for services
-        run: |
-          for i in {1..30}; do
-            if curl -fsS http://localhost:9000/is-alive > /dev/null; then
-              exit 0
-            fi
-            sleep 2
-          done
-          echo "DB fixture REST API did not start in time" >&2
-          exit 1
+        run: npx playwright install
 
       - name: Run tests
         run: npm test
