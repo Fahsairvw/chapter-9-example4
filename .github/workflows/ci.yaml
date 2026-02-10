@@ -1,3 +1,11 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
 jobs:
   test:
     runs-on: ubuntu-22.04
@@ -24,7 +32,7 @@ jobs:
       - name: Show running containers
         run: docker ps
 
-      - name: Wait for app
+      - name: Wait for app to be ready
         run: npx wait-on http://localhost:3000
 
       - name: Run Playwright tests
