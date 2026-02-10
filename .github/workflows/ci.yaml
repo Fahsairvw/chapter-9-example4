@@ -18,22 +18,17 @@ jobs:
         node-version: 18.x
     
     - name: Start services
-      working-directory: ./example-4
       run: docker compose up -d --build
     
     - name: Install dependencies
-      working-directory: ./example-4
       run: npm ci
     
     - name: Install Playwright
-      working-directory: ./example-4
       run: npx playwright install --with-deps
     
     - name: Run tests
-      working-directory: ./example-4
       run: npm test
     
     - name: Cleanup
       if: always()
-      working-directory: ./example-4
       run: docker compose down -v
