@@ -23,7 +23,15 @@ jobs:
         run: npm install
 
       - name: Install Playwright browsers
-        run: npx playwright install
+        run: npx playwright install --with-deps
+
+      - name: Start microservice
+        run: |
+          export PORT=9000
+          export DBHOST="mongodb://localhost:27017"
+          export DBNAME="video-streaming"
+          node index.js &
+          sleep 5
 
       - name: Run tests
         run: npm test
