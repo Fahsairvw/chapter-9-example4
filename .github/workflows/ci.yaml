@@ -1,14 +1,6 @@
-name: CI
-
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
@@ -29,11 +21,14 @@ jobs:
       - name: Start services
         run: docker compose up -d --build
 
-      - name: Wait for services to be ready
-        run: sleep 10
+      - name: Show running containers
+        run: docker ps
 
-      - name: Run tests (CI mode)
-        run: CI=true npm test
+      - name: Wait for app
+        run: npx wait-on http://localhost:3000
+
+      - name: Run Playwright tests
+        run: npx playwright test
 
       - name: Upload Playwright report
         if: always()
