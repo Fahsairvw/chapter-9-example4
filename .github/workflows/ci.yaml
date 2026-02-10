@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,11 +26,14 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Start services
+      - name: Start services with Docker Compose
         run: docker compose up -d --build
 
-      - name: Wait for services to be ready
+      - name: Wait for Metadata API (9000)
         run: npx wait-on http://localhost:9000
+
+      - name: Wait for Frontend (3000)
+        run: npx wait-on http://localhost:3000
 
       - name: Run tests
         run: npm test
