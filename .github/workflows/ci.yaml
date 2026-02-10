@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-20.04
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,8 +29,11 @@ jobs:
       - name: Start services
         run: docker compose up -d --build
 
-      - name: Run tests
-        run: npm test
+      - name: Wait for services to be ready
+        run: sleep 10
+
+      - name: Run tests (CI mode)
+        run: CI=true npm test
 
       - name: Upload Playwright report
         if: always()
